@@ -36,7 +36,7 @@
     "adbkit": "^2.4.1",
     "appium-adb": "^6.24.0",
     "appium-android-driver": "^4.0.0",
-    "appium-base-driver": "^3.10.0",
+    "appium-base-driver": "3.10.0",
     "appium-support": "^2.24.0",
     "appium-uiautomator2-server": "^2.3.0",
     "asyncbox": "^2.3.1",
