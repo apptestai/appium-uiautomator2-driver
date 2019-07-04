@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import B from 'bluebird';
 import { PNG } from 'pngjs';
 import { SCROLL_CAPS } from '../desired';
-import { initDriver } from '../helpers/session';
+import { initSession, deleteSession } from '../helpers/session';
 
 chai.should();
 chai.use(chaiAsPromised);
@@ -12,11 +12,11 @@ let driver;
 
 describe('testViewportCommands', function () {
   before(async function () {
-    driver = await initDriver(SCROLL_CAPS);
+    driver = await initSession(SCROLL_CAPS);
   });
   after(async function () {
     if (driver) {
-      await driver.quit();
+      await deleteSession();
     }
   });
 
@@ -40,14 +40,14 @@ describe('testViewportCommands', function () {
 
   it('should get content size from scrollable element found as uiobject', async function () {
     let scrollableEl = await driver.elementByXPath('//*[@scrollable="true"]');
-    let contentSize = await scrollableEl.getAttribute("contentSize");
+    let contentSize = await scrollableEl.getAttribute('contentSize');
     contentSize.should.exist;
     JSON.parse(contentSize).scrollableOffset.should.exist;
   });
 
   it('should get content size from scrollable element found as uiobject2', async function () {
     let scrollableEl = await driver.elementByXPath('//android.widget.ScrollView');
-    let contentSize = await scrollableEl.getAttribute("contentSize");
+    let contentSize = await scrollableEl.getAttribute('contentSize');
     contentSize.should.exist;
     JSON.parse(contentSize).scrollableOffset.should.exist;
   });
@@ -65,7 +65,7 @@ describe('testViewportCommands', function () {
     }
     const {viewportRect, statBarHeight} = await driver.sessionCapabilities();
     const fullScreen = await driver.takeScreenshot();
-    const viewScreen = await driver.execute("mobile: viewportScreenshot");
+    const viewScreen = await driver.execute('mobile: viewportScreenshot');
     const fullB64 = Buffer.from(fullScreen, 'base64');
     const viewB64 = Buffer.from(viewScreen, 'base64');
     const fullImg = new PNG({filterType: 4});

@@ -3,9 +3,9 @@ import chaiAsPromised from 'chai-as-promised';
 import _ from 'lodash';
 import B from 'bluebird';
 import stream from 'stream';
-import Unzip from 'unzip';
+import unzipper from 'unzipper';
 import { APIDEMOS_CAPS } from '../desired';
-import { initDriver } from '../helpers/session';
+import { initSession, deleteSession } from '../helpers/session';
 
 
 chai.should();
@@ -14,10 +14,10 @@ chai.use(chaiAsPromised);
 describe('file movement', function () {
   let driver;
   before(async function () {
-    driver = await initDriver(APIDEMOS_CAPS);
+    driver = await initSession(APIDEMOS_CAPS);
   });
   after(async function () {
-    await driver.quit();
+    await deleteSession();
   });
 
   function getRandomDir () {
@@ -56,7 +56,7 @@ describe('file movement', function () {
       let zipStream = new stream.Readable();
       zipStream._read = _.noop;
       zipStream
-        .pipe(Unzip.Parse())
+        .pipe(unzipper.Parse())
         .on('entry', function (entry) {
           entryCount++;
           entry.autodrain();

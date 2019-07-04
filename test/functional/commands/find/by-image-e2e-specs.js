@@ -3,7 +3,7 @@ import B from 'bluebird';
 import path from 'path';
 import chaiAsPromised from 'chai-as-promised';
 import { APIDEMOS_CAPS } from '../../desired';
-import { initDriver } from '../../helpers/session';
+import { initSession, deleteSession } from '../../helpers/session';
 
 
 chai.should();
@@ -17,9 +17,9 @@ describe('Find - Image @skip-ci', function () {
   let driver;
 
   before(async function () {
-    driver = await initDriver({
+    driver = await initSession({
       ...APIDEMOS_CAPS,
-      appActivity: ".view.ChronometerDemo"
+      appActivity: '.view.ChronometerDemo'
     });
     // use the driver settings that cause the most code paths to be exercised
     await driver.updateSettings({
@@ -29,7 +29,7 @@ describe('Find - Image @skip-ci', function () {
   });
 
   after(async function () {
-    await driver.quit();
+    await deleteSession();
   });
 
   it('should find image elements', async function () {
